@@ -1,5 +1,10 @@
 extension Swirth {
     enum Operation {
+        enum Unary {
+            case dot
+            case dup
+        }
+
         enum Binary {
             case add
             case divide
@@ -7,7 +12,7 @@ extension Swirth {
             case subtract
         }
 
-        case dot
+        case unary(Unary)
         case binary(Binary)
     }
 
@@ -28,7 +33,9 @@ extension Swirth {
                     let str = String(value)
 
                     if str == "." {
-                        return .operation(.dot)
+                        return .operation(.unary(.dot))
+                    } else if str == "dup" {
+                        return .operation(.unary(.dup))
                     } else if str == "+" {
                         return .operation(.binary(.add))
                     } else if str == "/" {

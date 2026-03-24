@@ -38,12 +38,18 @@ extension Swirth {
                         case .subtract:
                             stack.append(lhs - rhs)
                     }
-                case .dot:
+                case .unary(let unop):
                     guard let value = stack.popLast() else {
                         throw ExecutionError.stackUnderflow
                     }
 
-                    print(value)
+                    switch unop {
+                        case .dot:
+                            print(value)
+                        case .dup:
+                            stack.append(value)
+                            stack.append(value)
+                    }
             }
         }
     }
