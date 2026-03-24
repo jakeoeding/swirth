@@ -18,9 +18,9 @@ extension Swirth {
             }
         }
 
-        func performOperation(_ op: Operation) throws {
-            switch op {
-                case .add:
+        func performOperation(_ operation: Operation) throws {
+            switch operation {
+                case .binary(let binop):
                     guard
                         let rhs = stack.popLast() as? Int,
                         let lhs = stack.popLast() as? Int
@@ -28,7 +28,16 @@ extension Swirth {
                         throw ExecutionError.invalidStackOperation
                     }
 
-                    stack.append(lhs + rhs)
+                    switch binop {
+                        case .add:
+                            stack.append(lhs + rhs)
+                        case .divide:
+                            stack.append(lhs / rhs)
+                        case .multiply:
+                            stack.append(lhs * rhs)
+                        case .subtract:
+                            stack.append(lhs - rhs)
+                    }
                 case .dot:
                     guard let value = stack.popLast() else {
                         throw ExecutionError.stackUnderflow

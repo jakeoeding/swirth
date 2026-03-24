@@ -1,12 +1,19 @@
 extension Swirth {
     enum Operation {
-        case add
+        enum Binary {
+            case add
+            case divide
+            case multiply
+            case subtract
+        }
+
         case dot
+        case binary(Binary)
     }
 
     enum ForthToken {
-        case literal(value: Int)
-        case operation(word: Operation)
+        case literal(Int)
+        case operation(Operation)
     }
 
     struct Lexer {
@@ -14,18 +21,24 @@ extension Swirth {
             case unexpectedToken(String)
         }
 
-        static func process(_ input: String) throws -> [ForthToken] {
+        static func tokenize(_ input: String) throws -> [ForthToken] {
             try input
                 .split(whereSeparator: \.isWhitespace)
                 .map { value in
                     let str = String(value)
 
-                    if str == "+" {
-                        return .operation(word: .add)
-                    } else if str == "." {
-                        return .operation(word: .dot)
+                    if str == "." {
+                        return .operation(.dot)
+                    } else if str == "+" {
+                        return .operation(.binary(.add))
+                    } else if str == "/" {
+                        return .operation(.binary(.divide))
+                    } else if str == "*" {
+                        return .operation(.binary(.multiply))
+                    } else if str == "-" {
+                        return .operation(.binary(.subtract))
                     } else if let i = Int(str) {
-                        return .literal(value: i)
+                        return .literal(i)
                     } else {
                         throw LexingError.unexpectedToken(str)
                     }

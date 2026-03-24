@@ -5,7 +5,7 @@ struct Swirth {
 
         while let line = readLine() {
             do {
-                let tokens = try Lexer.process(line)
+                let tokens = try Lexer.tokenize(line)
                 try vm.evaluate(tokens)
                 print("ok")
             } catch {
