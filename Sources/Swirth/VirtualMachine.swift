@@ -37,6 +37,9 @@ extension Swirth {
                             stack.append(lhs * rhs)
                         case .subtract:
                             stack.append(lhs - rhs)
+                        case .swap:
+                            stack.append(rhs)
+                            stack.append(lhs)
                     }
                 case .unary(let unop):
                     guard let value = stack.popLast() else {

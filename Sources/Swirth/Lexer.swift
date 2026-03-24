@@ -10,6 +10,7 @@ extension Swirth {
             case divide
             case multiply
             case subtract
+            case swap
         }
 
         case unary(Unary)
@@ -44,6 +45,8 @@ extension Swirth {
                         return .operation(.binary(.multiply))
                     } else if str == "-" {
                         return .operation(.binary(.subtract))
+                    } else if str == "swap" {
+                        return .operation(.binary(.swap))
                     } else if let i = Int(str) {
                         return .literal(i)
                     } else {
