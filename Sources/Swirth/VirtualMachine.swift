@@ -38,6 +38,16 @@ extension Swirth {
                             stack.append(lhs + rhs)
                         case .divide:
                             stack.append(lhs / rhs)
+                        case .equal:
+                            stack.append(BoolFlag.from(lhs == rhs).rawValue)
+                        case .greaterThan:
+                            stack.append(BoolFlag.from(lhs > rhs).rawValue)
+                        case .greaterThanOrEqual:
+                            stack.append(BoolFlag.from(lhs >= rhs).rawValue)
+                        case .lessThan:
+                            stack.append(BoolFlag.from(lhs < rhs).rawValue)
+                        case .lessThanOrEqual:
+                            stack.append(BoolFlag.from(lhs <= rhs).rawValue)
                         case .multiply:
                             stack.append(lhs * rhs)
                         case .subtract:

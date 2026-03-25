@@ -2,6 +2,10 @@ extension Swirth {
     enum BoolFlag: Int {
         case `true` = -1
         case `false` = 0
+
+        static func from (_ value: Bool) -> Self {
+            value ? .true : .false
+        }
     }
 
     enum Literal {
@@ -18,6 +22,11 @@ extension Swirth {
         enum Binary {
             case add
             case divide
+            case equal
+            case greaterThan
+            case greaterThanOrEqual
+            case lessThan
+            case lessThanOrEqual
             case multiply
             case subtract
             case swap
@@ -51,6 +60,16 @@ extension Swirth {
                         return .word(.binary(.add))
                     } else if str == "/" {
                         return .word(.binary(.divide))
+                    } else if str == "=" {
+                        return .word(.binary(.equal))
+                    } else if str == ">" {
+                        return .word(.binary(.greaterThan))
+                    } else if str == ">=" {
+                        return .word(.binary(.greaterThanOrEqual))
+                    } else if str == "<" {
+                        return .word(.binary(.lessThan))
+                    } else if str == "<=" {
+                        return .word(.binary(.lessThanOrEqual))
                     } else if str == "*" {
                         return .word(.binary(.multiply))
                     } else if str == "-" {
