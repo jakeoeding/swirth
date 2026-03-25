@@ -1,5 +1,15 @@
 extension Swirth {
-    enum Operation {
+    enum BoolFlag: Int {
+        case `true` = -1
+        case `false` = 0
+    }
+
+    enum Literal {
+        case int(Int)
+        case bool(BoolFlag)
+    }
+
+    enum Word {
         enum Unary {
             case dot
             case dup
@@ -18,8 +28,8 @@ extension Swirth {
     }
 
     enum ForthToken {
-        case literal(Int)
-        case operation(Operation)
+        case literal(Literal)
+        case word(Word)
     }
 
     struct Lexer {
@@ -34,21 +44,25 @@ extension Swirth {
                     let str = String(value)
 
                     if str == "." {
-                        return .operation(.unary(.dot))
+                        return .word(.unary(.dot))
                     } else if str == "dup" {
-                        return .operation(.unary(.dup))
+                        return .word(.unary(.dup))
                     } else if str == "+" {
-                        return .operation(.binary(.add))
+                        return .word(.binary(.add))
                     } else if str == "/" {
-                        return .operation(.binary(.divide))
+                        return .word(.binary(.divide))
                     } else if str == "*" {
-                        return .operation(.binary(.multiply))
+                        return .word(.binary(.multiply))
                     } else if str == "-" {
-                        return .operation(.binary(.subtract))
+                        return .word(.binary(.subtract))
                     } else if str == "swap" {
-                        return .operation(.binary(.swap))
+                        return .word(.binary(.swap))
+                    } else if str == "true" {
+                        return .literal(.bool(.true))
+                    } else if str == "false" {
+                        return .literal(.bool(.false))
                     } else if let i = Int(str) {
-                        return .literal(i)
+                        return .literal(.int(i))
                     } else {
                         throw LexingError.unexpectedToken(str)
                     }

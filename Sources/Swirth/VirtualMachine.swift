@@ -5,25 +5,30 @@ extension Swirth {
             case invalidStackOperation
         }
 
-        var stack = [Any]()
+        var stack = [Int]()
 
         func evaluate(_ tokens: [ForthToken]) throws {
             for token in tokens {
                 switch token {
                 case .literal(let value):
-                    stack.append(value)
-                case .operation(let op):
+                    switch value {
+                        case .int(let i):
+                            stack.append(i)
+                        case .bool(let b):
+                            stack.append(b.rawValue)
+                    }
+                case .word(let op):
                     try performOperation(op)
                 }
             }
         }
 
-        func performOperation(_ operation: Operation) throws {
+        func performOperation(_ operation: Word) throws {
             switch operation {
                 case .binary(let binop):
                     guard
-                        let rhs = stack.popLast() as? Int,
-                        let lhs = stack.popLast() as? Int
+                        let rhs = stack.popLast(),
+                        let lhs = stack.popLast()
                     else {
                         throw ExecutionError.invalidStackOperation
                     }
