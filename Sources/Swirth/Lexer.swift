@@ -36,48 +36,70 @@ extension Swirth {
     struct Lexer {
         enum LexingError: Error {
             case unexpectedToken(String)
+            case unterminatedComment
         }
 
         static func tokenize(_ input: String) throws(LexingError) -> [Token] {
-            try input
-                .split(whereSeparator: \.isWhitespace)
-                .map { value throws(LexingError) in
-                    let str = String(value)
+            var tokens = [Token]()
+            var commentMode = false
 
-                    if str == "." {
-                        return .word(.dot)
-                    } else if str == "dup" {
-                        return .word(.dup)
-                    } else if str == "+" {
-                        return .word(.add)
-                    } else if str == "/" {
-                        return .word(.divide)
-                    } else if str == "=" {
-                        return .word(.equal)
-                    } else if str == ">" {
-                        return .word(.greaterThan)
-                    } else if str == ">=" {
-                        return .word(.greaterThanOrEqual)
-                    } else if str == "<" {
-                        return .word(.lessThan)
-                    } else if str == "<=" {
-                        return .word(.lessThanOrEqual)
-                    } else if str == "*" {
-                        return .word(.multiply)
-                    } else if str == "-" {
-                        return .word(.subtract)
-                    } else if str == "swap" {
-                        return .word(.swap)
-                    } else if str == "true" {
-                        return .literal(.bool(.true))
-                    } else if str == "false" {
-                        return .literal(.bool(.false))
-                    } else if let i = Int(str) {
-                        return .literal(.int(i))
-                    } else {
-                        throw .unexpectedToken(str)
-                    }
+            for value in input.split(whereSeparator: \.isWhitespace) {
+                let str = String(value)
+
+                if str == "(" {
+                    commentMode = true
+                    continue
                 }
+
+                if commentMode && str == ")" {
+                    commentMode = false
+                    continue
+                }
+
+                if commentMode {
+                    continue
+                }
+
+                if str == "." {
+                    tokens.append(.word(.dot))
+                } else if str == "dup" {
+                    tokens.append(.word(.dup))
+                } else if str == "+" {
+                    tokens.append(.word(.add))
+                } else if str == "/" {
+                    tokens.append(.word(.divide))
+                } else if str == "=" {
+                    tokens.append(.word(.equal))
+                } else if str == ">" {
+                    tokens.append(.word(.greaterThan))
+                } else if str == ">=" {
+                    tokens.append(.word(.greaterThanOrEqual))
+                } else if str == "<" {
+                    tokens.append(.word(.lessThan))
+                } else if str == "<=" {
+                    tokens.append(.word(.lessThanOrEqual))
+                } else if str == "*" {
+                    tokens.append(.word(.multiply))
+                } else if str == "-" {
+                    tokens.append(.word(.subtract))
+                } else if str == "swap" {
+                    tokens.append(.word(.swap))
+                } else if str == "true" {
+                    tokens.append(.literal(.bool(.true)))
+                } else if str == "false" {
+                    tokens.append(.literal(.bool(.false)))
+                } else if let i = Int(str) {
+                    tokens.append(.literal(.int(i)))
+                } else {
+                    throw .unexpectedToken(str)
+                }
+            }
+
+            if commentMode {
+                throw .unterminatedComment
+            }
+
+            return tokens
         }
     }
 }
