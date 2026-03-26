@@ -14,26 +14,18 @@ extension Swirth {
     }
 
     enum Word {
-        enum Unary {
-            case dot
-            case dup
-        }
-
-        enum Binary {
-            case add
-            case divide
-            case equal
-            case greaterThan
-            case greaterThanOrEqual
-            case lessThan
-            case lessThanOrEqual
-            case multiply
-            case subtract
-            case swap
-        }
-
-        case unary(Unary)
-        case binary(Binary)
+        case dot
+        case dup
+        case add
+        case divide
+        case equal
+        case greaterThan
+        case greaterThanOrEqual
+        case lessThan
+        case lessThanOrEqual
+        case multiply
+        case subtract
+        case swap
     }
 
     enum ForthToken {
@@ -53,29 +45,29 @@ extension Swirth {
                     let str = String(value)
 
                     if str == "." {
-                        return .word(.unary(.dot))
+                        return .word(.dot)
                     } else if str == "dup" {
-                        return .word(.unary(.dup))
+                        return .word(.dup)
                     } else if str == "+" {
-                        return .word(.binary(.add))
+                        return .word(.add)
                     } else if str == "/" {
-                        return .word(.binary(.divide))
+                        return .word(.divide)
                     } else if str == "=" {
-                        return .word(.binary(.equal))
+                        return .word(.equal)
                     } else if str == ">" {
-                        return .word(.binary(.greaterThan))
+                        return .word(.greaterThan)
                     } else if str == ">=" {
-                        return .word(.binary(.greaterThanOrEqual))
+                        return .word(.greaterThanOrEqual)
                     } else if str == "<" {
-                        return .word(.binary(.lessThan))
+                        return .word(.lessThan)
                     } else if str == "<=" {
-                        return .word(.binary(.lessThanOrEqual))
+                        return .word(.lessThanOrEqual)
                     } else if str == "*" {
-                        return .word(.binary(.multiply))
+                        return .word(.multiply)
                     } else if str == "-" {
-                        return .word(.binary(.subtract))
+                        return .word(.subtract)
                     } else if str == "swap" {
-                        return .word(.binary(.swap))
+                        return .word(.swap)
                     } else if str == "true" {
                         return .literal(.bool(.true))
                     } else if str == "false" {

@@ -2,7 +2,6 @@ extension Swirth {
     final class VirtualMachine {
         enum ExecutionError: Error {
             case stackUnderflow
-            case invalidStackOperation
         }
 
         var stack = [Int]()
@@ -25,50 +24,63 @@ extension Swirth {
 
         func performOperation(_ operation: Word) throws {
             switch operation {
-                case .binary(let binop):
-                    guard
-                        let rhs = stack.popLast(),
-                        let lhs = stack.popLast()
-                    else {
-                        throw ExecutionError.invalidStackOperation
-                    }
-
-                    switch binop {
-                        case .add:
-                            stack.append(lhs + rhs)
-                        case .divide:
-                            stack.append(lhs / rhs)
-                        case .equal:
-                            stack.append(BoolFlag.from(lhs == rhs).rawValue)
-                        case .greaterThan:
-                            stack.append(BoolFlag.from(lhs > rhs).rawValue)
-                        case .greaterThanOrEqual:
-                            stack.append(BoolFlag.from(lhs >= rhs).rawValue)
-                        case .lessThan:
-                            stack.append(BoolFlag.from(lhs < rhs).rawValue)
-                        case .lessThanOrEqual:
-                            stack.append(BoolFlag.from(lhs <= rhs).rawValue)
-                        case .multiply:
-                            stack.append(lhs * rhs)
-                        case .subtract:
-                            stack.append(lhs - rhs)
-                        case .swap:
-                            stack.append(rhs)
-                            stack.append(lhs)
-                    }
-                case .unary(let unop):
-                    guard let value = stack.popLast() else {
-                        throw ExecutionError.stackUnderflow
-                    }
-
-                    switch unop {
-                        case .dot:
-                            print(value)
-                        case .dup:
-                            stack.append(value)
-                            stack.append(value)
-                    }
+                case .dot:
+                    print(try pop())
+                case .dup:
+                    let top = try pop()
+                    stack.append(top)
+                    stack.append(top)
+                case .add:
+                    let (lhs, rhs) = try pop2()
+                    stack.append(lhs + rhs)
+                case .divide:
+                    let (lhs, rhs) = try pop2()
+                    stack.append(lhs / rhs)
+                case .equal:
+                    let (lhs, rhs) = try pop2()
+                    stack.append(BoolFlag.from(lhs == rhs).rawValue)
+                case .greaterThan:
+                    let (lhs, rhs) = try pop2()
+                    stack.append(BoolFlag.from(lhs > rhs).rawValue)
+                case .greaterThanOrEqual:
+                    let (lhs, rhs) = try pop2()
+                    stack.append(BoolFlag.from(lhs >= rhs).rawValue)
+                case .lessThan:
+                    let (lhs, rhs) = try pop2()
+                    stack.append(BoolFlag.from(lhs < rhs).rawValue)
+                case .lessThanOrEqual:
+                    let (lhs, rhs) = try pop2()
+                    stack.append(BoolFlag.from(lhs <= rhs).rawValue)
+                case .multiply:
+                    let (lhs, rhs) = try pop2()
+                    stack.append(lhs * rhs)
+                case .subtract:
+                    let (lhs, rhs) = try pop2()
+                    stack.append(lhs - rhs)
+                case .swap:
+                    let (lhs, rhs) = try pop2()
+                    stack.append(rhs)
+                    stack.append(lhs)
             }
+        }
+
+        private func pop() throws -> Int {
+            guard let top = stack.popLast() else {
+                throw ExecutionError.stackUnderflow
+            }
+
+            return top
+        }
+
+        private func pop2() throws -> (Int, Int) {
+            guard
+                let rhs = stack.popLast(),
+                let lhs = stack.popLast()
+            else {
+                throw ExecutionError.stackUnderflow
+            }
+
+            return (lhs, rhs)
         }
     }
 }
