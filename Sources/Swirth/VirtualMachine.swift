@@ -1,41 +1,33 @@
 extension Swirth {
     final class VirtualMachine {
         enum ExecutionError: Error {
+            case divisionByZero
             case stackUnderflow
         }
 
         var stack = [Int]()
 
-        func evaluate(_ tokens: [ForthToken]) throws {
-            for token in tokens {
-                switch token {
-                case .literal(let value):
-                    switch value {
-                        case .int(let i):
-                            stack.append(i)
-                        case .bool(let b):
-                            stack.append(b.rawValue)
-                    }
-                case .word(let op):
-                    try performOperation(op)
-                }
-            }
-        }
-
-        func performOperation(_ operation: Word) throws {
-            switch operation {
+        func evaluate(_ instructions: [Instruction]) throws(ExecutionError) {
+            for instruction in instructions {
+                switch instruction {
+                case .push(let i):
+                    stack.append(i)
                 case .dot:
                     print(try pop())
                 case .dup:
-                    let top = try pop()
-                    stack.append(top)
+                    let top = try peek()
                     stack.append(top)
                 case .add:
                     let (lhs, rhs) = try pop2()
                     stack.append(lhs + rhs)
                 case .divide:
-                    let (lhs, rhs) = try pop2()
-                    stack.append(lhs / rhs)
+                    let (numerator, denominator) = try pop2()
+
+                    if denominator == 0 {
+                        throw .divisionByZero
+                    }
+
+                    stack.append(numerator / denominator)
                 case .equal:
                     let (lhs, rhs) = try pop2()
                     stack.append(BoolFlag.from(lhs == rhs).rawValue)
@@ -61,23 +53,32 @@ extension Swirth {
                     let (lhs, rhs) = try pop2()
                     stack.append(rhs)
                     stack.append(lhs)
+                }
             }
         }
 
-        private func pop() throws -> Int {
-            guard let top = stack.popLast() else {
-                throw ExecutionError.stackUnderflow
+        private func peek() throws(ExecutionError) -> Int {
+            guard let top = stack.last else {
+                throw .stackUnderflow
             }
 
             return top
         }
 
-        private func pop2() throws -> (Int, Int) {
+        private func pop() throws(ExecutionError) -> Int {
+            guard let top = stack.popLast() else {
+                throw .stackUnderflow
+            }
+
+            return top
+        }
+
+        private func pop2() throws(ExecutionError) -> (Int, Int) {
             guard
                 let rhs = stack.popLast(),
                 let lhs = stack.popLast()
             else {
-                throw ExecutionError.stackUnderflow
+                throw .stackUnderflow
             }
 
             return (lhs, rhs)

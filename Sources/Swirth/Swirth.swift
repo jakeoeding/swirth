@@ -6,7 +6,8 @@ struct Swirth {
         while let line = readLine() {
             do {
                 let tokens = try Lexer.tokenize(line)
-                try vm.evaluate(tokens)
+                let instructions = Compiler.emitIR(tokens)
+                try vm.evaluate(instructions)
                 print("ok")
             } catch {
                 print("Error: \(error)")

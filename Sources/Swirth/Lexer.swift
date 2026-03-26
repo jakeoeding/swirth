@@ -28,7 +28,7 @@ extension Swirth {
         case swap
     }
 
-    enum ForthToken {
+    enum Token {
         case literal(Literal)
         case word(Word)
     }
@@ -38,10 +38,10 @@ extension Swirth {
             case unexpectedToken(String)
         }
 
-        static func tokenize(_ input: String) throws -> [ForthToken] {
+        static func tokenize(_ input: String) throws(LexingError) -> [Token] {
             try input
                 .split(whereSeparator: \.isWhitespace)
-                .map { value in
+                .map { value throws(LexingError) in
                     let str = String(value)
 
                     if str == "." {
@@ -75,7 +75,7 @@ extension Swirth {
                     } else if let i = Int(str) {
                         return .literal(.int(i))
                     } else {
-                        throw LexingError.unexpectedToken(str)
+                        throw .unexpectedToken(str)
                     }
                 }
         }
