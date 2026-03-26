@@ -50,9 +50,9 @@ extension Swirth {
                     let (lhs, rhs) = try pop2()
                     stack.append(lhs - rhs)
                 case .swap:
-                    let (lhs, rhs) = try pop2()
-                    stack.append(rhs)
-                    stack.append(lhs)
+                    let (a, b) = try pop2()
+                    stack.append(b)
+                    stack.append(a)
                 }
             }
         }
@@ -75,13 +75,13 @@ extension Swirth {
 
         private func pop2() throws(ExecutionError) -> (Int, Int) {
             guard
-                let rhs = stack.popLast(),
-                let lhs = stack.popLast()
+                let top = stack.popLast(),
+                let next = stack.popLast()
             else {
                 throw .stackUnderflow
             }
 
-            return (lhs, rhs)
+            return (next, top)
         }
     }
 }
