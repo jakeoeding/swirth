@@ -13,6 +13,7 @@ extension Swirth {
         case multiply
         case subtract
         case swap
+        case drop
     }
 
     final class Compiler {
@@ -67,6 +68,8 @@ extension Swirth {
                         currentOutput.append(.subtract)
                     case .swap:
                         currentOutput.append(.swap)
+                    case .drop:
+                        currentOutput.append(.drop)
                     }
                 case .delimiter(let d):
                     switch d {

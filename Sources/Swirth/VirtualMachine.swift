@@ -53,6 +53,8 @@ extension Swirth {
                     let (a, b) = try pop2()
                     stack.append(b)
                     stack.append(a)
+                case .drop:
+                    _ = try pop()
                 }
             }
         }

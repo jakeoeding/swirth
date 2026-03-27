@@ -26,6 +26,7 @@ extension Swirth {
         case multiply
         case subtract
         case swap
+        case drop
     }
 
     enum Delimiter {
@@ -90,6 +91,8 @@ extension Swirth {
                     tokens.append(.word(.subtract))
                 } else if str == "swap" {
                     tokens.append(.word(.swap))
+                } else if str == "drop" {
+                    tokens.append(.word(.drop))
                 } else if str == "true" {
                     tokens.append(.literal(.bool(.true)))
                 } else if str == "false" {
