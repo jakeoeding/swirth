@@ -28,14 +28,20 @@ extension Swirth {
         case swap
     }
 
+    enum Delimiter {
+        case functionStart
+        case functionEnd
+    }
+
     enum Token {
         case literal(Literal)
         case word(Word)
+        case delimiter(Delimiter)
+        case identifier(String)
     }
 
     struct Lexer {
         enum LexingError: Error {
-            case unexpectedToken(String)
             case unterminatedComment
         }
 
@@ -88,10 +94,14 @@ extension Swirth {
                     tokens.append(.literal(.bool(.true)))
                 } else if str == "false" {
                     tokens.append(.literal(.bool(.false)))
+                } else if str == ":" {
+                    tokens.append(.delimiter(.functionStart))
+                } else if str == ";" {
+                    tokens.append(.delimiter(.functionEnd))
                 } else if let i = Int(str) {
                     tokens.append(.literal(.int(i)))
                 } else {
-                    throw .unexpectedToken(str)
+                    tokens.append(.identifier(str))
                 }
             }
 

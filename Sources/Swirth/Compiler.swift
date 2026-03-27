@@ -15,50 +15,86 @@ extension Swirth {
         case swap
     }
 
-    struct Compiler {
-        static func emitIR(_ tokens: [Token]) -> [Instruction] {
-            var instructions = [Instruction]()
+    final class Compiler {
+        enum CompilationError: Error {
+            case invalidDefinitionTermination
+            case undefinedWord(String)
+        }
+
+        var definitions = [String: [Instruction]]()
+
+        func emitIR(_ tokens: [Token]) throws(CompilationError) -> [Instruction] {
+            var outputStack: [[Instruction]] = [[]]
+
+            var currentDefinition: String?
+            var currentOutput: [Instruction] {
+                get { outputStack[outputStack.count - 1] }
+                set { outputStack[outputStack.count - 1] = newValue }
+            }
 
             for token in tokens {
                 switch token {
                 case .literal(let value):
                     switch value {
                     case .int(let i):
-                        instructions.append(.push(i))
+                        currentOutput.append(.push(i))
                     case .bool(let b):
-                        instructions.append(.push(b.rawValue))
+                        currentOutput.append(.push(b.rawValue))
                     }
                 case .word(let op):
                     switch op {
                     case .dot:
-                        instructions.append(.dot)
+                        currentOutput.append(.dot)
                     case .dup:
-                        instructions.append(.dup)
+                        currentOutput.append(.dup)
                     case .add:
-                        instructions.append(.add)
+                        currentOutput.append(.add)
                     case .divide:
-                        instructions.append(.divide)
+                        currentOutput.append(.divide)
                     case .equal:
-                        instructions.append(.equal)
+                        currentOutput.append(.equal)
                     case .greaterThan:
-                        instructions.append(.greaterThan)
+                        currentOutput.append(.greaterThan)
                     case .greaterThanOrEqual:
-                        instructions.append(.greaterThanOrEqual)
+                        currentOutput.append(.greaterThanOrEqual)
                     case .lessThan:
-                        instructions.append(.lessThan)
+                        currentOutput.append(.lessThan)
                     case .lessThanOrEqual:
-                        instructions.append(.lessThanOrEqual)
+                        currentOutput.append(.lessThanOrEqual)
                     case .multiply:
-                        instructions.append(.multiply)
+                        currentOutput.append(.multiply)
                     case .subtract:
-                        instructions.append(.subtract)
+                        currentOutput.append(.subtract)
                     case .swap:
-                        instructions.append(.swap)
+                        currentOutput.append(.swap)
                     }
+                case .delimiter(let d):
+                    switch d {
+                    case .functionStart:
+                        outputStack.append([])
+                    case .functionEnd:
+                        if currentDefinition == nil {
+                            throw .invalidDefinitionTermination
+                        }
+
+                        definitions[currentDefinition!] = outputStack.removeLast()
+                        currentDefinition = nil
+                    }
+                case .identifier(let id):
+                    if currentDefinition == nil && outputStack.count > 1 {
+                        currentDefinition = id
+                        continue
+                    }
+
+                    guard let instructionsForId = definitions[id] else {
+                        throw .undefinedWord(id)
+                    }
+
+                    currentOutput.append(contentsOf: instructionsForId)
                 }
             }
 
-            return instructions
+            return outputStack.removeLast()
         }
     }
 }
