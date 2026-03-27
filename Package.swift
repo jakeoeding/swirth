@@ -10,9 +10,21 @@ let package = Package(
             targets: ["swirth"]
         )
     ],
+    dependencies: [
+        .package(
+            url: "https://github.com/apple/swift-argument-parser.git",
+            exact: "1.7.1"
+        )
+    ],
     targets: [
         .executableTarget(
-            name: "swirth"
+            name: "swirth",
+            dependencies: [
+                .product(
+                    name: "ArgumentParser",
+                    package: "swift-argument-parser"
+                )
+            ]
         ),
     ]
 )
