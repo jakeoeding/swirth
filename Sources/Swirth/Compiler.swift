@@ -109,12 +109,17 @@ extension Swirth {
                 case .dup:
                     output.append("    ldr  x8, [x19, #-8]")
                     output.append("    str  x8, [x19], #8")
+                case .add:
+                    output.append("    ldr  x9, [x19, #-8]!")
+                    output.append("    ldr  x8, [x19, #-8]!")
+                    output.append("    add  x8, x8, x9")
+                    output.append("    str  x8, [x19], #8")
                 default:
                     fatalError("`\(instruction)` not implemented")
                 }
             }
 
-            output.append(contentsOf: exitWithCode(0))
+            output.append(contentsOf: exit(code: 0))
 
             if includeIO {
                 output.append(contentsOf: stringSection())
@@ -148,9 +153,9 @@ extension Swirth {
             ]
         }
 
-        private func exitWithCode(_ code: Int) -> [String] {
+        private func exit(code: Int) -> [String] {
             return [
-                "    mov  x0, #0",
+                "    mov  x0, #\(code)",
                 "    bl   _exit"
             ]
         }
