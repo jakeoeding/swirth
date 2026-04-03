@@ -114,6 +114,11 @@ extension Swirth {
                     output.append("    ldr  x8, [x19, #-8]!")
                     output.append("    add  x8, x8, x9")
                     output.append("    str  x8, [x19], #8")
+                case .divide:
+                    output.append("    ldr  x9, [x19, #-8]!")
+                    output.append("    ldr  x8, [x19, #-8]!")
+                    output.append("    sdiv x8, x8, x9")
+                    output.append("    str  x8, [x19], #8")
                 default:
                     fatalError("`\(instruction)` not implemented")
                 }
