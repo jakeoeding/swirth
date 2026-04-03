@@ -94,20 +94,21 @@ extension Swirth {
             for instruction in instructions {
                 switch instruction {
                 case .push(let i):
-                    output.append(contentsOf: pushStack(value: i))
+                    output.append("    mov  x8, #\(i)")
+                    output.append("    str  x8, [x19], #8")
                 case .dot:
                     output.append("    adrp x0, fmt@PAGE")
                     output.append("    add  x0, x0, fmt@PAGEOFF")
 
                     output.append("    sub  sp, sp, #16")
-                    output.append(contentsOf: popStack(register: 8))
+                    output.append("    ldr  x8, [x19, #-8]!")
                     output.append("    str  x8, [sp]")
 
                     output.append("    bl   _printf")
                     output.append("    add  sp, sp, #16")
                 case .dup:
                     output.append("    ldr  x8, [x19, #-8]")
-                    output.append(contentsOf: pushStackFrom(register: 8))
+                    output.append("    str  x8, [x19], #8")
                 default:
                     fatalError("`\(instruction)` not implemented")
                 }
@@ -170,28 +171,6 @@ extension Swirth {
                 ".align 3",
                 "stack:",
                 "    .skip 8192"
-            ]
-        }
-
-        private func pushStack(value: Int) -> [String] {
-            return [
-                "    mov  x8, #\(value)",
-                "    str  x8, [x19]",
-                "    add  x19, x19, #8",
-            ]
-        }
-
-        private func pushStackFrom(register: Int) -> [String] {
-            return [
-                "    str  x\(register), [x19]",
-                "    add  x19, x19, #8",
-            ]
-        }
-
-        private func popStack(register: Int) -> [String] {
-            return [
-                "    sub  x19, x19, #8",
-                "    ldr  x\(register), [x19]"
             ]
         }
     }
