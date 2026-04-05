@@ -129,6 +129,13 @@ extension Swirth {
                     output.append("    ldr  x8, [x19, #-8]!")
                     output.append("    sub  x8, x8, x9")
                     output.append("    str  x8, [x19], #8")
+                case .swap:
+                    output.append("    ldr  x9, [x19, #-8]!")
+                    output.append("    ldr  x8, [x19, #-8]!")
+                    output.append("    str  x9, [x19], #8")
+                    output.append("    str  x8, [x19], #8")
+                case .drop:
+                    output.append("    sub x19, x19, #8")
                 default:
                     fatalError("`\(instruction)` not implemented")
                 }
