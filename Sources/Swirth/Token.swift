@@ -3,7 +3,7 @@ extension Swirth {
         case `true` = -1
         case `false` = 0
 
-        static func from (_ value: Bool) -> Self {
+        static func from(_ value: Bool) -> Self {
             value ? .true : .false
         }
     }

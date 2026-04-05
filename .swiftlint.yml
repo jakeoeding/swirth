@@ -1,0 +1,35 @@
+excluded:
+  - .build
+
+disabled_rules:
+  - cyclomatic_complexity
+  - function_body_length
+  - identifier_name
+  - line_length
+  - nesting
+
+opt_in_rules:
+  - closure_end_indentation
+  - comma_inheritance
+  - contains_over_filter_count
+  - contains_over_filter_is_empty
+  - contains_over_first_not_nil
+  - contains_over_range_nil_comparison
+  - direct_return
+  - discouraged_none_name
+  - empty_collection_literal
+  - empty_count
+  - empty_string
+  - first_where
+  - indentation_width
+  - joined_default_parameter
+  - last_where
+  - prefer_zero_over_explicit_init
+  - reduce_into
+  - redundant_nil_coalescing
+  - toggle_bool
+  - trailing_closure
+  - unused_parameter
+
+trailing_comma:
+  mandatory_comma: true

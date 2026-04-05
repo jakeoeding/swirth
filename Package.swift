@@ -9,7 +9,7 @@ let package = Package(
         .executable(
             name: "swirth",
             targets: ["swirth"],
-        )
+        ),
     ],
     dependencies: [
         .package(
@@ -19,7 +19,7 @@ let package = Package(
         .package(
             url: "https://github.com/swiftlang/swift-subprocess.git",
             exact: "0.4.0"
-        )
+        ),
     ],
     targets: [
         .executableTarget(
@@ -32,7 +32,7 @@ let package = Package(
                 .product(
                     name: "Subprocess",
                     package: "swift-subprocess"
-                )
+                ),
             ]
         ),
     ]

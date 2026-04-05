@@ -154,14 +154,14 @@ extension Swirth {
                 "",
                 "_main:",
                 "    adrp x19, stack@GOTPAGE",
-                "    ldr  x19, [x19, stack@GOTPAGEOFF]"
+                "    ldr  x19, [x19, stack@GOTPAGEOFF]",
             ]
         }
 
         private func exit(code: Int) -> [String] {
             return [
                 "    mov  x0, #\(code)",
-                "    bl   _exit"
+                "    bl   _exit",
             ]
         }
 
@@ -170,7 +170,7 @@ extension Swirth {
                 "",
                 ".section __TEXT,__cstring",
                 "fmt:",
-                "    .asciz \"%d\\n\""
+                "    .asciz \"%d\\n\"",
             ]
         }
 
@@ -180,7 +180,7 @@ extension Swirth {
                 ".section __DATA,__bss",
                 ".align 3",
                 "stack:",
-                "    .skip 8192"
+                "    .skip 8192",
             ]
         }
     }
