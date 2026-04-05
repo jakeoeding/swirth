@@ -119,6 +119,16 @@ extension Swirth {
                     output.append("    ldr  x8, [x19, #-8]!")
                     output.append("    sdiv x8, x8, x9")
                     output.append("    str  x8, [x19], #8")
+                case .multiply:
+                    output.append("    ldr  x9, [x19, #-8]!")
+                    output.append("    ldr  x8, [x19, #-8]!")
+                    output.append("    mul  x8, x8, x9")
+                    output.append("    str  x8, [x19], #8")
+                case .subtract:
+                    output.append("    ldr  x9, [x19, #-8]!")
+                    output.append("    ldr  x8, [x19, #-8]!")
+                    output.append("    sub  x8, x8, x9")
+                    output.append("    str  x8, [x19], #8")
                 default:
                     fatalError("`\(instruction)` not implemented")
                 }
