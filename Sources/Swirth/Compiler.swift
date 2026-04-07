@@ -119,6 +119,13 @@ extension Swirth {
                     output.append("    ldr  x8, [x19, #-8]!")
                     output.append("    sdiv x8, x8, x9")
                     output.append("    str  x8, [x19], #8")
+                case .equal:
+                    output.append("    ldr  x9, [x19, #-8]!")
+                    output.append("    ldr  x8, [x19, #-8]!")
+                    output.append("    mov  x10, #-1")
+                    output.append("    cmp  x8, x9")
+                    output.append("    csel x10, x10, xzr, eq")
+                    output.append("    str  x10, [x19], #8")
                 case .multiply:
                     output.append("    ldr  x9, [x19, #-8]!")
                     output.append("    ldr  x8, [x19, #-8]!")
@@ -135,13 +142,13 @@ extension Swirth {
                     output.append("    str  x9, [x19], #8")
                     output.append("    str  x8, [x19], #8")
                 case .drop:
-                    output.append("    sub x19, x19, #8")
+                    output.append("    sub  x19, x19, #8")
                 default:
                     fatalError("`\(instruction)` not implemented")
                 }
             }
 
-            output.append(contentsOf: exit(code: 0))
+            output.append(contentsOf: exitWith(code: 0))
 
             if includeIO {
                 output.append(contentsOf: stringSection())
@@ -175,7 +182,7 @@ extension Swirth {
             ]
         }
 
-        private func exit(code: Int) -> [String] {
+        private func exitWith(code: Int) -> [String] {
             return [
                 "    mov  x0, #\(code)",
                 "    bl   _exit",
