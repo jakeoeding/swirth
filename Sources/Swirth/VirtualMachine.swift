@@ -1,10 +1,5 @@
 extension Swirth {
     final class VirtualMachine {
-        enum ExecutionError: Error {
-            case divisionByZero
-            case stackUnderflow
-        }
-
         var stack = [Int]()
 
         func evaluate(_ instructions: [Instruction]) throws(ExecutionError) {
@@ -85,5 +80,12 @@ extension Swirth {
 
             return (next, top)
         }
+    }
+}
+
+extension Swirth.VirtualMachine {
+    enum ExecutionError: Error {
+        case divisionByZero
+        case stackUnderflow
     }
 }

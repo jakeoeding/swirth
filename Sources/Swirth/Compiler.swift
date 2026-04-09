@@ -1,10 +1,5 @@
 extension Swirth {
     final class Compiler {
-        enum CompilationError: Error {
-            case invalidDefinitionTermination
-            case undefinedWord(String)
-        }
-
         var definitions = [String: [Instruction]]()
 
         func emitIR(_ tokens: [Token]) throws(CompilationError) -> [Instruction] {
@@ -207,5 +202,12 @@ extension Swirth {
                 "    .skip 8192",
             ]
         }
+    }
+}
+
+extension Swirth.Compiler {
+    enum CompilationError: Error {
+        case invalidDefinitionTermination
+        case undefinedWord(String)
     }
 }
