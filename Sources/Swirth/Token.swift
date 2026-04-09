@@ -19,6 +19,7 @@ extension Swirth {
         case add
         case divide
         case equal
+        case notEqual
         case greaterThan
         case greaterThanOrEqual
         case lessThan

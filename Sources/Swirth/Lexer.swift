@@ -31,6 +31,8 @@ extension Swirth {
                     tokens.append(.word(.divide))
                 } else if str == "=" {
                     tokens.append(.word(.equal))
+                } else if str == "<>" {
+                    tokens.append(.word(.notEqual))
                 } else if str == ">" {
                     tokens.append(.word(.greaterThan))
                 } else if str == ">=" {

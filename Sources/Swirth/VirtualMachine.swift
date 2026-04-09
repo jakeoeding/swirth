@@ -26,6 +26,9 @@ extension Swirth {
                 case .equal:
                     let (lhs, rhs) = try pop2()
                     stack.append(BoolFlag.from(lhs == rhs).rawValue)
+                case .notEqual:
+                    let (lhs, rhs) = try pop2()
+                    stack.append(BoolFlag.from(lhs != rhs).rawValue)
                 case .greaterThan:
                     let (lhs, rhs) = try pop2()
                     stack.append(BoolFlag.from(lhs > rhs).rawValue)

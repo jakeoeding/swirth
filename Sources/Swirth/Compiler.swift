@@ -32,6 +32,8 @@ extension Swirth {
                         currentOutput.append(.divide)
                     case .equal:
                         currentOutput.append(.equal)
+                    case .notEqual:
+                        currentOutput.append(.notEqual)
                     case .greaterThan:
                         currentOutput.append(.greaterThan)
                     case .greaterThanOrEqual:
@@ -116,6 +118,8 @@ extension Swirth {
                     output.append("    str  x8, [x19], #8")
                 case .equal:
                     output.append(contentsOf: generateComparisonAsm(.eq))
+                case .notEqual:
+                    output.append(contentsOf: generateComparisonAsm(.ne))
                 case .greaterThan:
                     output.append(contentsOf: generateComparisonAsm(.gt))
                 case .greaterThanOrEqual:
@@ -225,6 +229,7 @@ extension Swirth.Compiler {
 
     enum ConditionCode {
         case eq
+        case ne
         case gt
         case ge
         case lt
