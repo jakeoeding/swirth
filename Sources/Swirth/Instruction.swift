@@ -15,5 +15,7 @@ extension Swirth {
         case subtract
         case swap
         case drop
+        case lshift
+        case rshift
     }
 }

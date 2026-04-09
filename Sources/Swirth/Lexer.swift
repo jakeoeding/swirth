@@ -49,6 +49,10 @@ extension Swirth {
                     tokens.append(.word(.swap))
                 } else if str == "drop" {
                     tokens.append(.word(.drop))
+                } else if str == "lshift" {
+                    tokens.append(.word(.lshift))
+                } else if str == "rshift" {
+                    tokens.append(.word(.rshift))
                 } else if str == "true" {
                     tokens.append(.literal(.bool(.true)))
                 } else if str == "false" {

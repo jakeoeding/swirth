@@ -50,6 +50,10 @@ extension Swirth {
                         currentOutput.append(.swap)
                     case .drop:
                         currentOutput.append(.drop)
+                    case .lshift:
+                        currentOutput.append(.lshift)
+                    case .rshift:
+                        currentOutput.append(.rshift)
                     }
                 case .delimiter(let d):
                     switch d {
@@ -145,6 +149,16 @@ extension Swirth {
                     output.append("    str  x8, [x19], #8")
                 case .drop:
                     output.append("    sub  x19, x19, #8")
+                case .lshift:
+                    output.append("    ldr  x9, [x19, #-8]!")
+                    output.append("    ldr  x8, [x19, #-8]!")
+                    output.append("    lsl  x8, x8, x9")
+                    output.append("    str  x8, [x19], #8")
+                case .rshift:
+                    output.append("    ldr  x9, [x19, #-8]!")
+                    output.append("    ldr  x8, [x19, #-8]!")
+                    output.append("    lsr  x8, x8, x9")
+                    output.append("    str  x8, [x19], #8")
                 }
             }
 

@@ -53,6 +53,12 @@ extension Swirth {
                     stack.append(a)
                 case .drop:
                     _ = try pop()
+                case .lshift:
+                    let (x, n) = try pop2()
+                    stack.append(x << n)
+                case .rshift:
+                    let (x, n) = try pop2()
+                    stack.append(x >> n)
                 }
             }
         }
