@@ -1,9 +1,5 @@
 extension Swirth {
     struct Lexer {
-        enum LexingError: Error {
-            case unterminatedComment
-        }
-
         static func tokenize(_ input: String) throws(LexingError) -> [Token] {
             var tokens = [Token]()
             var commentMode = false
@@ -72,5 +68,11 @@ extension Swirth {
 
             return tokens
         }
+    }
+}
+
+extension Swirth.Lexer {
+    enum LexingError: Error {
+        case unterminatedComment
     }
 }
