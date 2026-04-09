@@ -115,12 +115,15 @@ extension Swirth {
                     output.append("    sdiv x8, x8, x9")
                     output.append("    str  x8, [x19], #8")
                 case .equal:
-                    output.append("    ldr  x9, [x19, #-8]!")
-                    output.append("    ldr  x8, [x19, #-8]!")
-                    output.append("    mov  x10, #-1")
-                    output.append("    cmp  x8, x9")
-                    output.append("    csel x10, x10, xzr, eq")
-                    output.append("    str  x10, [x19], #8")
+                    output.append(contentsOf: generateComparisonAsm(.eq))
+                case .greaterThan:
+                    output.append(contentsOf: generateComparisonAsm(.gt))
+                case .greaterThanOrEqual:
+                    output.append(contentsOf: generateComparisonAsm(.ge))
+                case .lessThan:
+                    output.append(contentsOf: generateComparisonAsm(.lt))
+                case .lessThanOrEqual:
+                    output.append(contentsOf: generateComparisonAsm(.le))
                 case .multiply:
                     output.append("    ldr  x9, [x19, #-8]!")
                     output.append("    ldr  x8, [x19, #-8]!")
@@ -138,8 +141,6 @@ extension Swirth {
                     output.append("    str  x8, [x19], #8")
                 case .drop:
                     output.append("    sub  x19, x19, #8")
-                default:
-                    fatalError("`\(instruction)` not implemented")
                 }
             }
 
@@ -202,6 +203,17 @@ extension Swirth {
                 "    .skip 8192",
             ]
         }
+
+        private func generateComparisonAsm(_ cc: ConditionCode) -> [String] {
+            return [
+                "    ldr  x9, [x19, #-8]!",
+                "    ldr  x8, [x19, #-8]!",
+                "    mov  x10, #-1",
+                "    cmp  x8, x9",
+                "    csel x10, x10, xzr, \(cc)",
+                "    str  x10, [x19], #8",
+            ]
+        }
     }
 }
 
@@ -209,5 +221,13 @@ extension Swirth.Compiler {
     enum CompilationError: Error {
         case invalidDefinitionTermination
         case undefinedWord(String)
+    }
+
+    enum ConditionCode {
+        case eq
+        case gt
+        case ge
+        case lt
+        case le
     }
 }
