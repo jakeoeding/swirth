@@ -53,6 +53,10 @@ extension Swirth {
                     tokens.append(.word(.lshift))
                 } else if str == "rshift" {
                     tokens.append(.word(.rshift))
+                } else if str == "max" {
+                    tokens.append(.word(.max))
+                } else if str == "min" {
+                    tokens.append(.word(.min))
                 } else if str == "true" {
                     tokens.append(.literal(.bool(.true)))
                 } else if str == "false" {

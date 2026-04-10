@@ -59,6 +59,12 @@ extension Swirth {
                 case .rshift:
                     let (x, n) = try pop2()
                     stack.append(x >> n)
+                case .max:
+                    let (a, b) = try pop2()
+                    stack.append(max(a, b))
+                case .min:
+                    let (a, b) = try pop2()
+                    stack.append(min(a, b))
                 }
             }
         }
