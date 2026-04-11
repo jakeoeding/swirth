@@ -1,7 +1,7 @@
 import ArgumentParser
 
 @main
-struct Swirth: AsyncParsableCommand {
+struct SwirthCLI: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         abstract: "A minimal Forth implemented in Swift.",
         subcommands: [Interpret.self, Compile.self],
