@@ -45,5 +45,9 @@ let package = Package(
                 ),
             ]
         ),
+        .testTarget(
+            name: "SwirthTests",
+            dependencies: ["SwirthCore"]
+        ),
     ]
 )
