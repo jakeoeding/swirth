@@ -1,16 +1,16 @@
-public enum Token {
+public enum Token: Sendable, Equatable {
     case literal(Literal)
     case word(Word)
     case delimiter(Delimiter)
     case identifier(String)
 }
 
-public enum Literal {
+public enum Literal: Sendable, Equatable {
     case int(Int)
     case bool(BoolFlag)
 }
 
-public enum BoolFlag: Int {
+public enum BoolFlag: Int, Sendable, Equatable {
     case `true` = -1
     case `false` = 0
 
@@ -19,7 +19,7 @@ public enum BoolFlag: Int {
     }
 }
 
-public enum Word {
+public enum Word: Sendable, Equatable {
     case dot
     case dup
     case add
@@ -40,7 +40,7 @@ public enum Word {
     case min
 }
 
-public enum Delimiter {
+public enum Delimiter: Sendable, Equatable {
     case functionStart
     case functionEnd
 }
