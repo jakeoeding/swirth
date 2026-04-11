@@ -6,9 +6,13 @@ let package = Package(
     name: "Swirth",
     platforms: [.macOS(.v13)],
     products: [
+        .library(
+            name: "SwirthCore",
+            targets: ["SwirthCore"]
+        ),
         .executable(
             name: "swirth",
-            targets: ["swirth"],
+            targets: ["SwirthCLI"],
         ),
     ],
     dependencies: [
@@ -22,9 +26,15 @@ let package = Package(
         ),
     ],
     targets: [
+        .target(
+            name: "SwirthCore"
+        ),
         .executableTarget(
-            name: "swirth",
+            name: "SwirthCLI",
             dependencies: [
+                .target(
+                    name: "SwirthCore"
+                ),
                 .product(
                     name: "ArgumentParser",
                     package: "swift-argument-parser"
