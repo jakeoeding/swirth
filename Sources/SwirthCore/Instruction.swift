@@ -1,4 +1,4 @@
-public enum Instruction: Sendable, Equatable {
+public enum Instruction: Sendable, Equatable, Hashable {
     case push(Int)
     case dot
     case dup
