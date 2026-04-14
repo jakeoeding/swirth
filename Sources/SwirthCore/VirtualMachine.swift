@@ -1,7 +1,22 @@
 public final class VirtualMachine {
     var stack = [Int]()
+    private let output: (Int) -> Void
 
-    public init() {}
+    public init(output: @escaping (Int) -> Void = { print($0) }) {
+        self.output = output
+    }
+
+    public var stackDepth: Int {
+        stack.count
+    }
+
+    public var stackTop: Int? {
+        stack.last
+    }
+
+    public var stackSnapshot: [Int] {
+        stack
+    }
 
     public func evaluate(_ instructions: [Instruction]) throws(ExecutionError) {
         for instruction in instructions {
@@ -9,7 +24,7 @@ public final class VirtualMachine {
             case .push(let i):
                 stack.append(i)
             case .dot:
-                print(try pop())
+                output(try pop())
             case .dup:
                 let top = try peek()
                 stack.append(top)
