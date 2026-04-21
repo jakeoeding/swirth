@@ -252,7 +252,7 @@ public final class Compiler {
 }
 
 extension Compiler {
-    public enum CompilationError: Error {
+    public enum CompilationError: Error, Equatable {
         case invalidDefinitionTermination
         case undefinedWord(String)
     }

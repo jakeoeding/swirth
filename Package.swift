@@ -46,7 +46,7 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "SwirthTests",
+            name: "SwirthCoreTests",
             dependencies: ["SwirthCore"]
         ),
     ]
