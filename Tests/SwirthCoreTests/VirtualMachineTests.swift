@@ -51,8 +51,8 @@ func divide() throws {
 
 @Test
 func divisionByZeroThrows() throws {
+    let vm = VirtualMachine()
     #expect(throws: VirtualMachine.ExecutionError.divisionByZero) {
-        let vm = VirtualMachine()
         try vm.evaluate([.push(1), .push(0), .divide])
     }
 }
@@ -196,24 +196,24 @@ func max(_ example: VirtualMachineCase) throws {
 
 @Test
 func peekingThrows() {
+    let vm = VirtualMachine()
     #expect(throws: VirtualMachine.ExecutionError.stackUnderflow) {
-        let vm = VirtualMachine()
         try vm.evaluate([.dup])
     }
 }
 
 @Test
 func poppingThrows() {
+    let vm = VirtualMachine()
     #expect(throws: VirtualMachine.ExecutionError.stackUnderflow) {
-        let vm = VirtualMachine()
         try vm.evaluate([.drop])
     }
 }
 
 @Test
 func poppingTwoThrows() {
+    let vm = VirtualMachine()
     #expect(throws: VirtualMachine.ExecutionError.stackUnderflow) {
-        let vm = VirtualMachine()
         try vm.evaluate([.push(1), .add])
     }
 }
